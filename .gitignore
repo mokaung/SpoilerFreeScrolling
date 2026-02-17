@@ -1,1 +1,25 @@
 node_modules
+dist/
+
+# Env and secrets
+.env
+.env.local
+.env.*.local
+
+# Test coverage
+coverage/
+
+# Build/cache
+*.tsbuildinfo
+.vite/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor (optional: remove .vscode if you want to commit shared settings)
+.idea/
