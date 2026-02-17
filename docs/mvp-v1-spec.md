@@ -13,14 +13,14 @@
 
 ### Main Profile List View
 
-- View all profiles
+- Profiles are shown in a **list** (one row per profile).
+- Each row shows: **topic name**, **chevron** (indicates row is clickable), **delete** button.
 - Search profiles (by title)
 - Filter by media type (All, TV, Movie, Game, Book)
 - Sort profiles (A–Z, Z–A, Newest First, Oldest First, Enabled First)
 - Click **New** → Create Profile Page
-- Click profile card → Profile Detail Page
-- Toggle profile on/off (inline)
-- Delete profile (with confirmation modal)
+- Click row (or chevron) → Profile Detail Page
+- Delete (per row, with confirmation modal)
 
 ### Create Profile Page
 
@@ -85,8 +85,8 @@ src/popup/
     │   ├── CreateProfileView.tsx      # Full create page (AI classifier planned for v1.1)
     │   └── ProfileDetailView.tsx      # Detail + inline edit mode (AI classifier in edit mode planned for v1.1)
     ├── profile/
-    │   ├── ProfileList.tsx
-    │   ├── ProfileCard.tsx
+    │   ├── ProfileList.tsx            # Renders list of profile rows
+    │   ├── ProfileListRow.tsx        # Row: topic name, chevron, delete button
     │   ├── ProfileStats.tsx
     │   └── KeywordsSection.tsx
     ├── ui/
@@ -106,5 +106,6 @@ src/popup/
 
 - **Root (project):** `index.html` = popup page; script entry is `src/popup/main.tsx` (or equivalent bundle path).
 - **BackButton:** Navigates to the previous page (list when coming from detail; from edit mode, returns to read-only detail).
+- **Profile list:** Rendered as rows (not cards). `ProfileList` renders the list; each item is a `ProfileListRow` (topic name, chevron, delete button).
 - **ProfileDetailView:** Renders read-only allowed accounts as a list; in edit mode it uses `AllowedAccountsInput` for add/remove.
 - **Modal:** `WarningModal` and `DeleteConfirmModal` both use `Modal` for layout to avoid duplicate modal markup/styles.
