@@ -1,13 +1,6 @@
-console.log('🚀 Spoiler Blocker background service worker loaded');
+chrome.runtime.onInstalled.addListener(() => {});
 
-// Listen for extension installation
-chrome.runtime.onInstalled.addListener(() => {
-  console.log('Extension installed!');
-});
-
-// Message handler for communication with content scripts
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  console.log('Message received:', message);
+chrome.runtime.onMessage.addListener((_message, _sender, sendResponse) => {
   sendResponse({ status: 'ok' });
   return true;
 });
