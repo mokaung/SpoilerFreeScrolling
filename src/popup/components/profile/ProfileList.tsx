@@ -1,6 +1,6 @@
 import React from "react";
-import { ProfileListRow } from "./ProfileListRow";
-import type { MediaProfile } from "../../../shared/types";
+import { ProfileListRow } from "@/popup/components/profile/ProfileListRow";
+import type { MediaProfile } from "@/shared/types";
 
 export interface ProfileListProps {
   profiles: MediaProfile[];

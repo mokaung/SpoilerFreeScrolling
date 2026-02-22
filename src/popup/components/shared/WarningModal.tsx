@@ -5,7 +5,7 @@ import {
 } from "@/popup/components/ui/dialog";
 import { Button } from "@/popup/components/ui/button";
 
-export interface DeleteConfirmModalProps {
+export interface WarningModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onConfirm: () => void;
@@ -15,21 +15,16 @@ export interface DeleteConfirmModalProps {
 }
 
 /**
- * A modal for confirming the deletion of a profile
- * @param open - Whether the modal is open
- * @param onOpenChange - Function to call when the modal is opened or closed
- * @param onConfirm - Function to call when the user confirms the deletion
- * @param title - The title of the modal
- * @returns A modal for confirming the deletion of a profile
+ * Spoiler warning modal shown before revealing keywords. Confirm proceeds; Cancel closes.
  */
-export function DeleteConfirmModal({
+export function WarningModal({
   open,
   onOpenChange,
   onConfirm,
-  title = "Delete this media?",
-  description,
-  confirmLabel = "Delete",
-}: DeleteConfirmModalProps) {
+  title = "Spoiler warning",
+  description = "Viewing keywords may reveal spoilers. View anyway?",
+  confirmLabel = "View anyway",
+}: WarningModalProps) {
   const handleConfirm = () => {
     onConfirm();
     onOpenChange(false);
@@ -44,19 +39,12 @@ export function DeleteConfirmModal({
         <DialogTitle className="text-base font-semibold">
           {title}
         </DialogTitle>
-        {description && (
-          <p className="mt-2 text-sm text-muted-foreground">{description}</p>
-        )}
+        <p className="mt-2 text-sm text-muted-foreground">{description}</p>
         <div className="mt-4 flex justify-end gap-2">
           <Button variant="outline" size="sm" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
-          <Button
-            variant="accent"
-            size="sm"
-            onClick={handleConfirm}
-            className="bg-red-600 hover:opacity-90"
-          >
+          <Button variant="accent" size="sm" onClick={handleConfirm}>
             {confirmLabel}
           </Button>
         </div>

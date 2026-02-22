@@ -1,12 +1,12 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { PopupHeader } from "./components/PopupHeader";
-import { MainView } from "./components/views/MainView";
-import { CreateProfileView } from "./components/views/CreateProfileView";
-import { ProfileDetailView } from "./components/views/ProfileDetailView";
-import { SettingsView } from "./components/views/SettingsView";
-import { DeleteConfirmModal } from "./components/shared/DeleteConfirmModal";
-import { storage } from "../shared/storage";
-import type { MediaProfile } from "../shared/types";
+import { PopupHeader } from "@/popup/components/PopupHeader";
+import { MainView } from "@/popup/components/views/MainView";
+import { CreateProfileView } from "@/popup/components/views/CreateProfileView";
+import { ProfileDetailView } from "@/popup/components/views/ProfileDetailView";
+import { SettingsView } from "@/popup/components/views/SettingsView";
+import { DeleteConfirmModal } from "@/popup/components/shared/DeleteConfirmModal";
+import { storage } from "@/shared/storage";
+import type { MediaProfile } from "@/shared/types";
 
 export type View = "list" | "create" | "detail" | "settings";
 
@@ -77,6 +77,12 @@ export function App() {
     }
   }, [darkMode]);
 
+  useEffect(() => {
+    if (typeof chrome !== 'undefined' && chrome.storage?.local) {
+      storage.getProfiles().then(setProfiles);
+    }
+  }, []);
+
   const goToList = useCallback(() => {
     setView("list");
     setSelectedProfileId(null);
@@ -101,14 +107,28 @@ export function App() {
     setDeleteConfirmId(id);
   }, []);
 
-  const handleDeleteConfirm = useCallback(() => {
-    if (deleteConfirmId) {
+  const handleDeleteConfirm = useCallback(async () => {
+    if (!deleteConfirmId) return;
+    try {
+      await storage.deleteProfile(deleteConfirmId);
       setProfiles((prev) => prev.filter((p) => p.id !== deleteConfirmId));
-      setDeleteConfirmId(null);
       setView("list");
       setSelectedProfileId(null);
+    } finally {
+      setDeleteConfirmId(null);
     }
   }, [deleteConfirmId]);
+
+  const handleCreated = useCallback(async () => {
+    const list = await storage.getProfiles();
+    setProfiles(list);
+    setView("list");
+  }, []);
+
+  const handleProfileChange = useCallback(async () => {
+    const list = await storage.getProfiles();
+    setProfiles(list);
+  }, []);
 
   const handleToggleEnabled = useCallback(async (id: string) => {
     // Update UI immediately for responsive toggle
@@ -133,17 +153,26 @@ export function App() {
   let content: React.ReactNode;
 
   if (view === "create") {
-    content = <CreateProfileView onBack={goToList} />;
+    content = (
+      <CreateProfileView onBack={goToList} onCreated={handleCreated} />
+    );
   } else if (view === "detail" && selectedProfileId) {
     content = (
       <ProfileDetailView
         profileId={selectedProfileId}
         profiles={profiles}
         onBack={goToList}
+        onDelete={handleDeleteRequest}
+        onProfileChange={handleProfileChange}
       />
     );
   } else if (view === "settings") {
-    content = <SettingsView onBack={goToList} />;
+    content = (
+      <SettingsView
+        onBack={goToList}
+        onProfilesChange={handleProfileChange}
+      />
+    );
   } else {
       content = (
         <MainView

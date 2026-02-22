@@ -1,6 +1,6 @@
 import React from "react";
 import { Search } from "lucide-react";
-import { Input } from "../ui/input";
+import { Input } from "@/popup/components/ui/input";
 
 export interface SearchBarProps {
   value: string;

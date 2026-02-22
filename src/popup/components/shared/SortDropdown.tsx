@@ -1,5 +1,10 @@
-import React from "react";
-import { ChevronDown } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/popup/components/ui/select";
 
 export const SORT_OPTIONS = [
   { value: "a-z", label: "A–Z" },
@@ -9,6 +14,8 @@ export const SORT_OPTIONS = [
   { value: "enabled", label: "Enabled First" },
 ] as const;
 
+
+// The sort value is the active sort option the user has selected
 export type SortValue = (typeof SORT_OPTIONS)[number]["value"];
 
 export interface SortDropdownProps {
@@ -18,19 +25,17 @@ export interface SortDropdownProps {
 
 export function SortDropdown({ value, onChange }: SortDropdownProps) {
   return (
-    <div className="relative inline-block min-w-[140px]">
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value as SortValue)}
-        className="h-9 w-full appearance-none rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 pl-3 pr-8 text-sm text-gray-700 dark:text-gray-300 cursor-pointer"
-      >
+    <Select value={value} onValueChange={(v) => onChange(v as SortValue)}>
+      <SelectTrigger className="min-w-[140px] w-full">
+        <SelectValue placeholder="Sort" />
+      </SelectTrigger>
+      <SelectContent>
         {SORT_OPTIONS.map((opt) => (
-          <option key={opt.value} value={opt.value}>
+          <SelectItem key={opt.value} value={opt.value}>
             {opt.label}
-          </option>
+          </SelectItem>
         ))}
-      </select>
-      <ChevronDown className="pointer-events-none absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500 dark:text-gray-400" />
-    </div>
+      </SelectContent>
+    </Select>
   );
 }

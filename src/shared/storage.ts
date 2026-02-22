@@ -1,7 +1,13 @@
-import type { MediaProfile} from "./types";
+import type { MediaProfile } from "@/shared/types";
 
 export class StorageManager {
   private readonly PROFILES_KEY = "mediaProfiles";
+
+  private assertStorage(): void {
+    if (typeof chrome === "undefined" || !chrome.storage?.local) {
+      throw new Error("Extension storage is not available. Open the app as an extension popup.");
+    }
+  }
 
   /**
    * Gets all media profiles from storage
@@ -9,6 +15,7 @@ export class StorageManager {
    */
   async getProfiles(): Promise<MediaProfile[]> {
     try {
+      this.assertStorage();
       const result = (await chrome.storage.local.get(
         this.PROFILES_KEY,
       )) as Record<string, MediaProfile[] | undefined>;
@@ -34,6 +41,7 @@ export class StorageManager {
    * @param profile - The media profile to save
    */
   async saveProfile(profile: MediaProfile): Promise<void> {
+    this.assertStorage();
     try {
       const profiles = await this.getProfiles();
 
@@ -105,6 +113,22 @@ export class StorageManager {
       console.error("Error deleting profile:", error);
       throw error;
     }
+  }
+
+  /**
+   * Replaces the entire profiles list in storage.
+   * Used for import (append then set) and delete-all (pass []).
+   */
+  async setProfiles(profiles: MediaProfile[]): Promise<void> {
+    this.assertStorage();
+    await chrome.storage.local.set({ [this.PROFILES_KEY]: profiles });
+  }
+
+  /**
+   * Deletes all media profiles from storage.
+   */
+  async deleteAllProfiles(): Promise<void> {
+    await this.setProfiles([]);
   }
 
   /**

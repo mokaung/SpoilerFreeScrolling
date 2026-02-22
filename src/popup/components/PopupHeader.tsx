@@ -1,6 +1,6 @@
 import React from "react";
 import { Settings, Moon, Sun } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "@/popup/components/ui/button";
 
 export interface PopupHeaderProps {
   onSettingsClick: () => void;

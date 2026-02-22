@@ -1,6 +1,6 @@
 import React from "react";
 import { ChevronLeft } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "@/popup/components/ui/button";
 
 export interface BackButtonProps {
   onClick: () => void;

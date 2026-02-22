@@ -1,5 +1,5 @@
 import React from "react";
-import type { MediaProfile } from "../../../shared/types";
+import type { MediaProfile } from "@/shared/types";
 
 const FILTER_OPTIONS: { value: "all" | MediaProfile["mediaType"]; label: string }[] = [
   { value: "all", label: "All" },
@@ -16,6 +16,7 @@ export interface FilterButtonsProps {
   onChange: (value: FilterValue) => void;
 }
 
+// Define base classes so there's no duplication
 const baseClasses =
   "flex-1 rounded-md text-sm font-medium cursor-pointer select-none flex items-center justify-center h-9 px-4 border transition-all";
 

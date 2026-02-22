@@ -1,4 +1,4 @@
-import type { MediaProfile } from "../../shared/types";
+import type { MediaProfile } from "@/shared/types";
 
 /** Format progress for display by media type. Returns empty string for Movie. */
 export function formatProgress(profile: MediaProfile): string {

@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from "react";
-import { Button } from "../ui/button";
-import { SearchBar } from "../shared/SearchBar";
-import { FilterButtons, type FilterValue } from "../shared/FilterButtons";
-import { SortDropdown, type SortValue } from "../shared/SortDropdown";
-import { ProfileList } from "../profile/ProfileList";
-import type { MediaProfile } from "../../../shared/types";
+import { Button } from "@/popup/components/ui/button";
+import { SearchBar } from "@/popup/components/shared/SearchBar";
+import { FilterButtons, type FilterValue } from "@/popup/components/shared/FilterButtons";
+import { SortDropdown, type SortValue } from "@/popup/components/shared/SortDropdown";
+import { ProfileList } from "@/popup/components/profile/ProfileList";
+import type { MediaProfile } from "@/shared/types";
 
 export interface MainViewProps {
   profiles: MediaProfile[];
@@ -14,6 +14,14 @@ export interface MainViewProps {
   onToggleEnabled: (id: string) => void;
 }
 
+/**
+ * This helper function filters and sorts the list of profiles based on user choices
+ * @param profiles - The list of profiles to filter and sort
+ * @param search - The search query to apply to the list
+ * @param filter - The filter to apply to the list
+ * @param sort - The sort order to apply to the list
+ * @returns The filtered and sorted list of profiles
+ */
 function filterAndSort(
   profiles: MediaProfile[],
   search: string,
@@ -22,6 +30,7 @@ function filterAndSort(
 ): MediaProfile[] {
   let list = profiles;
 
+  // Search is applied by making query lowercase and filtering by title
   if (search.trim()) {
     const q = search.trim().toLowerCase();
     list = list.filter((p) => p.title.toLowerCase().includes(q));
@@ -93,11 +102,11 @@ export function MainView({
         <div className="flex flex-1 flex-col items-center justify-center rounded-lg border border-dashed border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50 py-8 text-center">
           <p className="text-sm text-gray-500 dark:text-gray-400">
             {profiles.length === 0
-              ? "No profiles yet"
-              : "No profiles match your search or filter"}
+              ? "No medias yet"
+              : "No medias match your search or filter"}
           </p>
           <Button variant="accent" size="sm" onClick={onNew} className="mt-3">
-            New profile
+            New media
           </Button>
         </div>
       ) : (
